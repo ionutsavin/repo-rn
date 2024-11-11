@@ -63,7 +63,7 @@ def forward(X, weights_input_hidden, bias_hidden, weights_hidden_output, bias_ou
     return a1, a2
 
 
-def backward(X, y, a1, output, weights_hidden_output):
+def backward(y, a1, output, weights_hidden_output):
     output_error = output - y
     output_delta = output_error
     hidden_error = np.dot(output_delta, weights_hidden_output.T)
@@ -94,7 +94,7 @@ def train(X, y, X_val, y_val, input_size=784, hidden_size=100, output_size=10, i
             X_batch = X[i:i + batch_size]
             y_batch = y[i:i + batch_size]
             a1, output = forward(X_batch, weights_input_hidden, bias_hidden, weights_hidden_output, bias_output)
-            output_delta, hidden_delta = backward(X_batch, y_batch, a1, output, weights_hidden_output)
+            output_delta, hidden_delta = backward(y_batch, a1, output, weights_hidden_output)
             weights_input_hidden, bias_hidden, weights_hidden_output, bias_output = update_weights(X_batch, a1, output_delta, hidden_delta, weights_input_hidden, bias_hidden, weights_hidden_output, bias_output, learning_rate)
 
         train_accuracy = evaluate(X, y, weights_input_hidden, bias_hidden, weights_hidden_output, bias_output)
